@@ -14,3 +14,5 @@ gateway/auth.controller.ts - auth 로 가는 API 처리
 gateway/event.controller.ts - event 로 가는 API 처리
 
 event 내에서 scheduler 가 1분마다 등록된 event 의 종료 날짜가 지나면 isActive false 로 변경
+
+토큰 관리와 API 문서화가 미완성되어서 불편할 수 있습니다 죄송합니다.
