@@ -1,0 +1,17 @@
+# Base image
+FROM node:18
+
+# App working directory
+WORKDIR /app
+
+# Copy dependencies
+COPY . .
+COPY apps/gateway ./apps/gateway
+COPY libs ./libs
+
+# Install dependencies & Build
+RUN yarn install
+RUN yarn build:gateway:dev
+
+# Start app (dev or prod)
+CMD ["yarn", "start:gateway:dev"]

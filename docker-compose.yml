@@ -1,0 +1,55 @@
+services:
+  mongo:
+    image: mongodb/mongodb-community-server:6.0.18-ubi9
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 1234
+    volumes:
+      - mongo-data:/data/db
+      - ./init-mongodb.js:/docker-entrypoint-initdb.d/init-mongodb.js:ro
+
+  auth:
+    build:
+      context: .
+      dockerfile: dockerfile.auth
+    env_file:
+      - ./apps/auth/.env
+    container_name: auth
+    expose:
+      - '3001'
+    depends_on:
+      - mongo
+    command: yarn start:auth:dev
+
+  event:
+    build:
+      context: .
+      dockerfile: dockerfile.event
+    env_file:
+      - ./apps/event/.env
+    container_name: event
+    expose:
+      - '3002'
+    depends_on:
+      - mongo
+    command: yarn start:event:dev
+
+  gateway:
+    build:
+      context: .
+      dockerfile: dockerfile.gateway
+    env_file:
+      - ./apps/gateway/.env
+    container_name: gateway
+    ports:
+      - '3000:3000'
+    depends_on:
+      - auth
+      - event
+    command: yarn start:gateway:dev
+
+volumes:
+  mongo-data:

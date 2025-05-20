@@ -1,0 +1,4 @@
+export enum RewardRequestErrorCode {
+  INVALID_EVENT = 'INVALID_EVENT',
+  ALREADY_REQUESTED = 'ALREADY_REQUESTED',
+}
